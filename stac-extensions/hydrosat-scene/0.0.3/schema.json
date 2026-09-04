@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://hydrosat.github.io/stac-extensions/hydrosat-scene/0.0.3/schema.json#",
+  "title": "Hydrosat Extension",
+  "description": "Hydrosat STAC Extension for STAC Items.",
+  "oneOf": [
+    {
+      "$comment": "Schema defining the structure of Hydrosat STAC Items.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/stac_extensions"
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "properties",
+            "assets"
+          ],
+          "properties": {
+            "type": {
+              "const": "Feature"
+            },
+            "properties": {
+              "allOf": [
+                {
+                  "required": [
+                    "hydrosat:strip_id",
+                    "hydrosat:scene_id",
+                    "hydrosat:day_night"
+                  ]
+                },
+                {
+                  "$ref": "#/definitions/fields"
+                }
+              ]
+            },
+            "assets": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/fields"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "definitions": {
+    "stac_extensions": {
+      "type": "object",
+      "required": [
+        "stac_extensions"
+      ],
+      "properties": {
+        "stac_extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://hydrosat.github.io/stac-extensions/hydrosat-scene/0.0.3/schema.json"
+          }
+        }
+      }
+    },
+    "fields": {
+      "type": "object",
+      "properties": {
+        "hydrosat:strip_id": {
+          "title": "Strip ID",
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique identifier of the strip from which the scene was captured."
+        },
+        "hydrosat:scene_id": {
+          "title": "Scene ID",
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique identifier of the scene."
+        },
+        "hydrosat:day_night": {
+          "type": "string",
+          "title": "Day/Night Indicator",
+          "description": "Indicates whether the scene is collected during the day or night.",
+          "enum": [
+            "day",
+            "night"
+          ]
+        },
+        "hydrosat:radiometric_scaling.radiance_to_reflectance_scaling": {
+          "title": "Radiance to Reflectance Scaling",
+          "description": "Scaling factor to convert radiance to reflectance for the asset band.",
+          "type": "number"
+        },
+        "hydrosat:radiometric_scaling.reflectance_to_radiance_scaling": {
+          "title": "Reflectance to Radiance Scaling",
+          "description": "Scaling factor to convert reflectance to radiance for the asset band.",
+          "type": "number"
+        },
+        "hydrosat:brightness_temperature_coefficients.K1_constant": {
+          "title": "Brightness Temperature K1 Constant",
+          "description": "Thermal calibration K1 constant for converting radiance to brightness temperature.",
+          "type": "number"
+        },
+        "hydrosat:brightness_temperature_coefficients.K2_constant": {
+          "title": "Brightness Temperature K2 Constant",
+          "description": "Thermal calibration K2 constant for converting radiance to brightness temperature.",
+          "type": "number"
+        },
+        "hydrosat:quality_log": {
+          "title": "Quality Assurance Log",
+          "description": "Log providing details about the quality assurance checks for the scene data.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hydrosat:quality_log_human_readable": {
+          "title": "Quality Assurance Log (Human Readable)",
+          "description": "Human-readable log providing details about the quality assurance checks for the scene data.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hydrosat:geolocation_CE90_meters": {
+          "title": "Geolocation CE90 (meters)",
+          "description": "Estimated geolocation accuracy, reported as the radius (meters) within which 90% of geolocation errors are expected to fall.",
+          "type": "number"
+        }
+      },
+      "patternProperties": {
+        "^(?!hydrosat:)": {
+          "$comment": "Permits additional properties not prefixed with 'hydrosat:' without validation."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
