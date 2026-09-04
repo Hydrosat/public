@@ -107,14 +107,6 @@
         },
         "hydrosat:quality_log": {
           "title": "Quality Assurance Log",
-          "description": "Log providing details about the quality assurance checks for the scene data.",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "hydrosat:quality_log_human_readable": {
-          "title": "Quality Assurance Log (Human Readable)",
           "description": "Human-readable log providing details about the quality assurance checks for the scene data.",
           "type": "array",
           "items": {
